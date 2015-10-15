@@ -82,7 +82,7 @@ public class ComLibrary extends JavaPlugin{
 		return encryptionTestPassed;
 	}
 	
-	public void exportResource(String resourceName, File destination) throws Exception {
+	private void exportResource(String resourceName, File destination) throws Exception {
 		InputStream stream = null;
         OutputStream resStreamOut = null;
         try {
@@ -92,7 +92,6 @@ public class ComLibrary extends JavaPlugin{
             }
             int readBytes;
             byte[] buffer = new byte[4096];
-            //jarFolder = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath().replace('\\', '/');
             resStreamOut = new FileOutputStream(destination);
             while ((readBytes = stream.read(buffer)) > 0) {
             	resStreamOut.write(buffer, 0, readBytes);
