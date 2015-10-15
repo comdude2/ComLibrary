@@ -25,9 +25,13 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import net.comdude2.plugins.comlibrary.encryption.AES256;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ComLibrary extends JavaPlugin{
+	
+	public static boolean encryptionTestPassed = false;
 	
 	public ComLibrary(){
 		
@@ -43,6 +47,27 @@ public class ComLibrary extends JavaPlugin{
 				e.printStackTrace();
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
+		}
+		this.getLogger().info("Performing encryption test...");
+		try{
+			AES256 aes = new AES256();
+			aes.generateSalt();
+			String plain = "Pie is nice";
+			String encrypted = aes.encrypt(plain);
+			String decrypted = aes.decrypt(encrypted);
+			if (decrypted.equals(plain)){
+				this.getLogger().info("Encryption test passed.");
+				encryptionTestPassed = true;
+			}else{
+				this.getLogger().info("Encryption test failed!");
+				encryptionTestPassed = false;
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			this.getLogger().info("Encryption test failed!");
+			encryptionTestPassed = false;
+		}finally{
+			this.getLogger().info("Encryption test complete.");
 		}
 		this.getLogger().info(this.getDescription().getName() + " V" + this.getDescription().getVersion() + " is now Enabled!");
 	}

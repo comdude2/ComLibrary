@@ -18,6 +18,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Contact: admin@mcviral.net
 */
 
+/*	IMPORTANT
+ *  Before using this class it would be good practice to get the boolean 'encryptionTestPassed'
+ *  from ComLibrary class, this is to check wether the class passed a basic test, if it didn't
+ *  then using it might not be a good idea.
+*/
+
 package net.comdude2.plugins.comlibrary.encryption;
 	
 import java.security.AlgorithmParameters;
@@ -42,39 +48,34 @@ public class AES256 {
 	private static final int keySize = 256;
 	private byte[] ivBytes;
 	private  byte[] globalSaltBytes = null;
-	private boolean allow = false;
 	
 	public AES256(){
-		allow = true;
+		
 	}
 	
 	public String encrypt(String plainText) throws Exception { 
-		if (allow){
-			//get salt 
-			byte[] saltBytes = salt.getBytes("UTF-8");
-			
-			// Derive the key
-			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-			PBEKeySpec spec = new PBEKeySpec(
-				password.toCharArray(), 
-				saltBytes, 
-				pswdIterations, 
-				keySize
-				);
-			
-			SecretKey secretKey = factory.generateSecret(spec);
-			SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
-			
-			//encrypt the message
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			cipher.init(Cipher.ENCRYPT_MODE, secret);
-			AlgorithmParameters params = cipher.getParameters();
-			ivBytes = params.getParameterSpec(IvParameterSpec.class).getIV();
-			byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8"));
-			return new Base64().encodeAsString(encryptedTextBytes);
-		}else{
-			return null;
-		}
+		//get salt 
+		byte[] saltBytes = salt.getBytes("UTF-8");
+		
+		// Derive the key
+		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		PBEKeySpec spec = new PBEKeySpec(
+			password.toCharArray(), 
+			saltBytes, 
+			pswdIterations, 
+			keySize
+			);
+		
+		SecretKey secretKey = factory.generateSecret(spec);
+		SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
+		
+		//encrypt the message
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		cipher.init(Cipher.ENCRYPT_MODE, secret);
+		AlgorithmParameters params = cipher.getParameters();
+		ivBytes = params.getParameterSpec(IvParameterSpec.class).getIV();
+		byte[] encryptedTextBytes = cipher.doFinal(plainText.getBytes("UTF-8"));
+		return new Base64().encodeAsString(encryptedTextBytes);
 	}
 	
 	@SuppressWarnings("static-access")
