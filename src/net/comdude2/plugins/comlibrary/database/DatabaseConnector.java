@@ -74,6 +74,12 @@ public class DatabaseConnector {
 		}
 	}
 	
+	/*	IMPORTANT 
+	 * 
+	 * This method should be called before establishing a connection, i suggest only doing it once, perhaps when your plugin is enabled.
+	 * If you don't, on trying to connect, it could throw an error.
+	 * 
+	 */
 	public void loadJdbcDriver(){
 		System.out.println("Loading driver...");
 		try {

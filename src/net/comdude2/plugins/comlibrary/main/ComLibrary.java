@@ -36,6 +36,14 @@ public class ComLibrary extends JavaPlugin{
 	public void onEnable(){
 		File path = new File("");
 		File f = new File(path.getAbsolutePath() + "ComLibrary_Licence.txt");
+		if (!f.exists()){
+			try{
+				exportResource("LICENCE.txt", f);
+			}catch(Exception e){
+				e.printStackTrace();
+				this.getServer().getPluginManager().disablePlugin(this);
+			}
+		}
 		this.getLogger().info(this.getDescription().getName() + " V" + this.getDescription().getVersion() + " is now Enabled!");
 	}
 	
@@ -43,7 +51,7 @@ public class ComLibrary extends JavaPlugin{
 		this.getLogger().info(this.getDescription().getName() + " V" + this.getDescription().getVersion() + " is now Disabled!");
 	}
 	
-	public void ExportResource(String resourceName, File destination) throws Exception {
+	public void exportResource(String resourceName, File destination) throws Exception {
 		InputStream stream = null;
         OutputStream resStreamOut = null;
         try {
