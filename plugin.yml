@@ -1,0 +1,5 @@
+name: ComLibrary
+main: net.comdude2.plugins.comlibrary.main.ComLibrary
+version: 1.0
+author: comdude2
+description: A library plugin for other Minecraft plugins

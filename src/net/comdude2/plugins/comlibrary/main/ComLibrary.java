@@ -31,12 +31,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ComLibrary extends JavaPlugin{
 	
-	public static boolean encryptionTestPassed = false;
+	private static boolean encryptionTestPassed = false;
 	
 	public ComLibrary(){
 		
 	}
 	
+	@Override
 	public void onEnable(){
 		File path = new File("");
 		File f = new File(path.getAbsolutePath() + "ComLibrary_Licence.txt");
@@ -72,8 +73,13 @@ public class ComLibrary extends JavaPlugin{
 		this.getLogger().info(this.getDescription().getName() + " V" + this.getDescription().getVersion() + " is now Enabled!");
 	}
 	
+	@Override
 	public void onDisable(){
 		this.getLogger().info(this.getDescription().getName() + " V" + this.getDescription().getVersion() + " is now Disabled!");
+	}
+	
+	public static boolean getEncryptionTestPassed(){
+		return encryptionTestPassed;
 	}
 	
 	public void exportResource(String resourceName, File destination) throws Exception {
