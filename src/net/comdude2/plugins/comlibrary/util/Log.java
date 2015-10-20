@@ -35,7 +35,7 @@ public class Log {
 	private LogFormatter formatterTxt = null;
 	private FileHandler fileTxt = null;
 	
-	public Log(String name, boolean debug){
+	public Log(String name, String path, boolean debug){
 		logger = Logger.getLogger(name);
 		logger.setUseParentHandlers(false);
 		//ConsoleHandler handler = new ConsoleHandler();
@@ -44,8 +44,7 @@ public class Log {
 		this.debug = debug;
 		formatterTxt = new LogFormatter(name);
 		try {
-			File file = new File("");
-			String path = file.getAbsolutePath() + "/";
+			File file = null;
 			file = new File(path + "logs/");
 			if (!file.exists()){
 				file.mkdir();
@@ -54,9 +53,7 @@ public class Log {
 			if (file.exists()){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 				String logName = sdf.format(file.lastModified()) + ".txt";
-				//System.out.println(path + "logs/" + logName);
 				File f = new File(path + "logs/" + logName);
-				//f.createNewFile();
 				boolean worked = file.renameTo(f);
 				if (worked){
 					//System.out.println("Managed to rename log");
