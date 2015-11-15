@@ -43,7 +43,7 @@ public class ComLibrary extends JavaPlugin{
 		File f = new File(path.getAbsolutePath() + "ComLibrary_Licence.txt");
 		if (!f.exists()){
 			try{
-				exportResource("LICENCE.txt", f);
+				exportResource("/LICENSE.txt", f);
 			}catch(Exception e){
 				e.printStackTrace();
 				this.getServer().getPluginManager().disablePlugin(this);
@@ -64,7 +64,7 @@ public class ComLibrary extends JavaPlugin{
 				encryptionTestPassed = false;
 			}
 		}catch (Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 			this.getLogger().info("Encryption test failed!");
 			encryptionTestPassed = false;
 		}finally{
@@ -99,8 +99,8 @@ public class ComLibrary extends JavaPlugin{
         } catch (Exception ex) {
         	throw ex;
         } finally {
-        	stream.close();
-        	resStreamOut.close();
+        	try{stream.close();}catch(Exception e){}
+        	try{resStreamOut.close();}catch(Exception e){}
         }
 	}
 	

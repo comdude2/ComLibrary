@@ -23,6 +23,9 @@ package net.comdude2.plugins.comlibrary.database;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
+import java.util.logging.Logger;
+
 import com.mysql.jdbc.Connection;
 
 public class DatabaseConnector {
@@ -31,10 +34,13 @@ public class DatabaseConnector {
 	private String username = null;
 	private String password = null;
 	private Connection connection = null;
+	@SuppressWarnings("unused")
+	private Logger log = null;
 	
 	//jdbc:mysql://localhost:3306/   <-- Url needs to be like that
-	public DatabaseConnector(String URL){
+	public DatabaseConnector(String URL, Logger log){
 		this.URL = URL;
+		this.log = log;
 	}
 	
 	public void setupConnection(String username, String password){
@@ -46,9 +52,10 @@ public class DatabaseConnector {
 		if ((this.URL != null) && (this.username != null) && (this.password != null)){
 			//Connect
 			try {
-				connection = (Connection) DriverManager.getConnection(this.URL, username, password);
-			    System.out.println("Database connected!");
+				connection =  (Connection) DriverManager.getConnection(this.URL, username, password);
 			} catch (SQLException e) {
+				//log.severe("ERROR: " + e.getMessage() + " CODE: " + e.getErrorCode() + " SQL STATE: " + e.getSQLState() + " CAUSE: " + e.getCause());
+				//e.printStackTrace();
 				throw new IllegalStateException("Cannot connect the database!", e);
 			}
 		}else{
@@ -64,9 +71,7 @@ public class DatabaseConnector {
 		if (connection != null){
 			try {
 				if (!connection.isClosed()){
-					System.out.println("Disconnecting database: " + URL);
 					connection.close();
-					System.out.println("Database Disconnected.");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -81,7 +86,7 @@ public class DatabaseConnector {
 	 * 
 	 */
 	public void loadJdbcDriver(){
-		System.out.println("Loading driver...");
+		System.out.println("Loading MySQL jdbc driver...");
 		try {
 		    Class.forName("com.mysql.jdbc.Driver");
 		    System.out.println("Driver loaded!");

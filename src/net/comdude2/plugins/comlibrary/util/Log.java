@@ -22,12 +22,11 @@ package net.comdude2.plugins.comlibrary.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+//import java.text.SimpleDateFormat;
 //import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
-@Deprecated
 public class Log {
 	
 	private Logger logger = null;
@@ -35,7 +34,7 @@ public class Log {
 	private LogFormatter formatterTxt = null;
 	private FileHandler fileTxt = null;
 	
-	public Log(String name, String path, boolean debug){
+	public Log(String name, File f, boolean debug){
 		logger = Logger.getLogger(name);
 		logger.setUseParentHandlers(false);
 		//ConsoleHandler handler = new ConsoleHandler();
@@ -44,24 +43,7 @@ public class Log {
 		this.debug = debug;
 		formatterTxt = new LogFormatter(name);
 		try {
-			File file = null;
-			file = new File(path + "logs/");
-			if (!file.exists()){
-				file.mkdir();
-			}
-			file = new File(path + "logs/latest.txt");
-			if (file.exists()){
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-				String logName = sdf.format(file.lastModified()) + ".txt";
-				File f = new File(path + "logs/" + logName);
-				boolean worked = file.renameTo(f);
-				if (worked){
-					//System.out.println("Managed to rename log");
-				}else{
-					//System.out.println("Failed to rename log");
-				}
-			}
-			fileTxt = new FileHandler(path + "logs/latest.txt");
+			fileTxt = new FileHandler(f.getAbsoluteFile().toString());
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

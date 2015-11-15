@@ -34,7 +34,6 @@ import java.nio.channels.ReadableByteChannel;
 import net.comdude2.plugins.comlibrary.encryption.MD5;
 import net.comdude2.plugins.comlibrary.util.Log;
 
-@SuppressWarnings("deprecation")
 public class WebDownloader {
 	
 	private Log log = null;
