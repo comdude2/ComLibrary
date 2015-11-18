@@ -1,39 +1,34 @@
 package net.comdude2.plugins.comlibrary.commands;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class AbstractCommand {
 	
 	private String name = null;
-	private String root = null;
-	private HashMap <String, LinkedList <String>> patterns = new HashMap <String, LinkedList <String>> ();
+	private long id = -1L;
+	private LinkedList <String> response = new LinkedList <String> ();
 	
-	public AbstractCommand(String name, String root){
+	public AbstractCommand(String name, long id){
 		this.name = name;
-		this.root = root;
+		this.id = id;
 	}
 	
-	public AbstractCommand(String name, String root, HashMap <String, LinkedList <String>> patterns){
+	public AbstractCommand(String name, long id, LinkedList <String> response){
 		this.name = name;
-		this.root = root;
-		this.patterns = patterns;
+		this.id = id;
+		this.response = response;
 	}
 	
 	public String getName(){
 		return this.name;
 	}
 	
-	public String getRoot(){
-		return this.root;
+	public long getId(){
+		return this.id;
 	}
 	
-	public void registerPattern(String pattern, LinkedList <String> helpLines){
-		patterns.put(pattern, helpLines);
-	}
-	
-	public void unregisterPattern(){
-		
+	public LinkedList <String> getResponse(){
+		return this.response;
 	}
 	
 }
