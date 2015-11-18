@@ -27,14 +27,14 @@ public class CommandRegistrar {
         return false;
     }
 
-    public boolean interceptCommand(String[] args) {
+    public boolean interceptCommand(CommandWrapper cw) {
 
         for(String[] s : commands.keySet()) {
             Method m = this.commands.get(s);
             CommandMethod cm = m.getAnnotation(CommandMethod.class);
             if(cm.type() == CommandType.STATIC) {
-                if(Arrays.equals(s, args)) {
-                    this.runCommand(m);
+                if(Arrays.equals(s, cw.getArgs())) {
+                    //run
                     return true;
                 }
             } else if(cm.type() == CommandType.DYNAMIC) {
@@ -42,14 +42,6 @@ public class CommandRegistrar {
             }
         }
         return false;
-    }
-
-    private void runCommand(Method m) {
-        CommandMethod cm = m.getAnnotation(CommandMethod.class);
-        if(cm.type() == CommandType.STATIC) {
-
-        } else if(cm.type() == CommandType.DYNAMIC) {
-        }
     }
 
     public HashMap<String[], Method> getMethodMap() {
