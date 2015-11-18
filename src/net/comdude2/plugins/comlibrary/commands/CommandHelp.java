@@ -1,23 +1,18 @@
 package net.comdude2.plugins.comlibrary.commands;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
 public class CommandHelp {
 	
-	private String pluginName = null;
-	private String pluginVersion = null;
-	private List<String> pluginAuthors = new LinkedList <String> ();
+	private Plugin plugin = null;
 	private LinkedList <AbstractCommand> commands = new LinkedList <AbstractCommand> ();
 	
 	//Class is designed to offer an easy way to display help for commands in your plugin.
 	public CommandHelp(Plugin plugin){
-		this.pluginName = plugin.getName();
-		this.pluginVersion = plugin.getDescription().getVersion();
-		this.pluginAuthors = plugin.getDescription().getAuthors();
+		this.plugin = plugin;
 	}
 	
 	public boolean registerCommand(AbstractCommand command){
@@ -29,6 +24,7 @@ public class CommandHelp {
 		}
 	}
 	
+	//TODO Fill this out
 	public boolean unregisterCommand(String commandName){
 		return false;
 	}
@@ -42,8 +38,27 @@ public class CommandHelp {
 		return null;
 	}
 	
+	public AbstractCommand getCommand(long id){
+		for (AbstractCommand command : commands){
+			if (command.getId() == id){
+				return command;
+			}
+		}
+		return null;
+	}
+	
 	public void displayHelp(CommandSender sender, String command, String[] args){
-		
+		AbstractCommand cmd = getCommand(command);
+		if (cmd != null){
+			printHelp(sender, cmd);
+		}
+	}
+	
+	public void displayHelp(CommandSender sender, long id, String[] args){
+		AbstractCommand cmd = getCommand(id);
+		if (cmd != null){
+			printHelp(sender, cmd);
+		}
 	}
 	
 	private void printHelp(CommandSender sender, AbstractCommand cmd){
@@ -58,17 +73,17 @@ public class CommandHelp {
 	
 	private String formatResponse(String s, CommandSender sender){
 		if(s.contains("%%PLUGIN_NAME%%")){
-			s.replace("%%PLUGIN_NAME%%", this.pluginName);
+			s.replace("%%PLUGIN_NAME%%", this.plugin.getName());
 		}
 		if(s.contains("%%NAME%%")){
 			s.replace("%%NAME%%", sender.getName());
 		}
 		if(s.contains("%%VERSION%%")){
-			s.replace("%%VERSION%%", this.pluginVersion);
+			s.replace("%%VERSION%%", this.plugin.getDescription().getVersion());
 		}
 		if(s.contains("%%AUTHORS%%")){
 			String authors = "";
-			for (String a : this.pluginAuthors){
+			for (String a : this.plugin.getDescription().getAuthors()){
 				if (authors == ""){
 					authors = authors + a;
 				}else{
@@ -76,6 +91,9 @@ public class CommandHelp {
 				}
 			}
 			s.replace("%%AUTHORS%%", authors);
+		}
+		if (s.contains("%%DESCRIPTION%%")){
+			s.replace("%%DESCRIPTION%%", this.plugin.getDescription().getDescription());
 		}
 		return s;
 	}
