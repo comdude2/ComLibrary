@@ -19,6 +19,13 @@ public class CommandHelp {
 		return false;
 	}
 	
-	
+	public AbstractCommand getCommand(String commandName){
+		for (AbstractCommand command : commands){
+			if (command.getName().equalsIgnoreCase(commandName)){
+				return command;
+			}
+		}
+		return null;
+	}
 	
 }
