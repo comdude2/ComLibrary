@@ -1,6 +1,7 @@
 package net.comdude2.plugins.comlibrary.commands;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -16,7 +17,7 @@ public class CommandHelp {
 	}
 	
 	public boolean registerCommand(AbstractCommand command){
-		if (getCommand(command.getName()) == null){
+		if (getCommand(command.getName()) == null && getCommand(command.getId()) == null){
 			commands.add(command);
 			return true;
 		}else{
@@ -24,9 +25,14 @@ public class CommandHelp {
 		}
 	}
 	
-	//TODO Fill this out
 	public boolean unregisterCommand(String commandName){
-		return false;
+		AbstractCommand cmd = getCommand(commandName);
+		if (cmd != null){
+			commands.remove(cmd);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public AbstractCommand getCommand(String commandName){
@@ -96,6 +102,21 @@ public class CommandHelp {
 			s.replace("%%DESCRIPTION%%", this.plugin.getDescription().getDescription());
 		}
 		return s;
+	}
+	
+	public long generateNewId(){
+		Random r = new Random();
+		long chosen = 0L;
+		boolean used = false;
+		while(chosen == 0L || used == true){
+			chosen = r.nextLong();
+			if (getCommand(chosen) == null){
+				used = false;
+			}else{
+				used = true;
+			}
+		}
+		return chosen;
 	}
 	
 }
