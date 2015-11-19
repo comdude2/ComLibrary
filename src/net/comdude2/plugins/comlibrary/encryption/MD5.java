@@ -30,6 +30,13 @@ public class MD5 {
 	 * InputStream stream = new ByteArrayInputStream(exampleString.getBytes(StandardCharsets.UTF_8));
 	*/
 	
+	/**
+	 * Create an MD5 Checksum in byte array form based on a stream of bytes.
+	 * @param InputStream is
+	 * @param int bufferSize
+	 * @return byte[]
+	 * @throws Exception
+	 */
 	public static byte[] createChecksum(InputStream is, int bufferSize) throws Exception {
 		byte[] buffer = new byte [bufferSize];
 	    MessageDigest complete = MessageDigest.getInstance("MD5");
@@ -44,6 +51,13 @@ public class MD5 {
 	    return complete.digest();
 	}
 	
+	/**
+	 * Create an MD5 Checksum in String form based on a stream of bytes.
+	 * @param InputStream is
+	 * @param int bufferSize
+	 * @return String
+	 * @throws Exception
+	 */
 	public static String getMD5Checksum(InputStream is, int bufferSize) throws Exception {
 	   byte[] b = createChecksum(is, bufferSize);
 	   String result = "";

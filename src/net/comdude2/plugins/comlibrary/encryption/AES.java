@@ -58,7 +58,15 @@ public class AES {
 	private byte[] ivBytes;
 	private SecretKey secret = null;
 	
-	//keySize should be between 128 and 256
+	/**
+	 * Construct a new instance of AES.
+	 * NOTE: keySize should be between 128 and 256
+	 * @param int keySize
+	 * @param String password
+	 * @throws UnsupportedEncodingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 */
 	public AES(int keySize, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeySpecException{
 		this.keySize = keySize;
 		this.password = password;
@@ -66,6 +74,12 @@ public class AES {
 		this.generateKey();
 	}
 	
+	/**
+	 * Generate a SecretKey, this is used to encrypt and decrypt data.
+	 * @throws UnsupportedEncodingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 */
 	public void generateKey() throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeySpecException{
 		byte[] saltBytes = salt.getBytes("UTF-8");
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -80,6 +94,12 @@ public class AES {
 		secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
 	}
 	
+	/**
+	 * Encrypts a string.
+	 * @param String plainText
+	 * @return String
+	 * @throws Exception
+	 */
 	public String encrypt(String plainText) throws Exception { 
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, secret);
@@ -89,6 +109,12 @@ public class AES {
 		return new Base64().encodeAsString(encryptedTextBytes);
 	}
 	
+	/**
+	 * Decrypts a string.
+	 * @param String encryptedText
+	 * @return String
+	 * @throws Exception
+	 */
 	@SuppressWarnings("static-access")
 	public String decrypt(String encryptedText) throws Exception {
 		byte[] encryptedTextBytes = new Base64().decodeBase64(encryptedText);
@@ -105,10 +131,17 @@ public class AES {
 		return new String(decryptedTextBytes);
 	}
 	
+	/**
+	 * Generates random salt for the SecretKey to be derived from.
+	 */
 	public void generateSalt(){
 		salt = new String(generateSaltMethod());
 	}
 	
+	/**
+	 * Generates random byte array for use as salt.
+	 * @return byte[]
+	 */
 	public byte[] generateSaltMethod() {
 		SecureRandom random = new SecureRandom();
 		byte bytes[] = new byte[20];
@@ -116,23 +149,43 @@ public class AES {
 		return bytes;
 	}
 	
+	/**
+	 * Set the salt the SecretKey is derived from.
+	 * @param String salt
+	 */
 	public void setSalt(String salt){
 		this.salt = salt;
 	}
 	
+	/**
+	 * Get the salt the SecretKey was derived from.
+	 * @return String
+	 */
 	public String getSalt(){
 		return this.salt;
 	}
 	
-	public byte[] encryptBytes(byte[] plainText) throws Exception { 
+	/**
+	 * Encrypts a byte array.
+	 * @param byte[] plain
+	 * @return byte[]
+	 * @throws Exception
+	 */
+	public byte[] encryptBytes(byte[] plain) throws Exception { 
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, secret);
 		AlgorithmParameters params = cipher.getParameters();
 		ivBytes = params.getParameterSpec(IvParameterSpec.class).getIV();
-		byte[] encryptedTextBytes = cipher.doFinal(plainText);
+		byte[] encryptedTextBytes = cipher.doFinal(plain);
 		return encryptedTextBytes;
 	}
 	
+	/**
+	 * Decrypts a byte array.
+	 * @param byte[] encryptedTextBytes
+	 * @return
+	 * @throws Exception
+	 */
 	public byte[] decryptBytes(byte[] encryptedTextBytes) throws Exception {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(ivBytes));
@@ -147,26 +200,54 @@ public class AES {
 		return decryptedTextBytes;
 	}
 	
+	/**
+	 * Set the password used to derive the SecretKey.
+	 * @param String pass
+	 */
 	public void setPassword(String pass){
 		this.password = pass;
 	}
 	
+	/**
+	 * Get the password used to derive the SecretKey.
+	 * @return String
+	 */
 	public String getPassword(){
 		return this.password;
 	}
 	
+	/**
+	 * Get the SecretKey.
+	 * @return SecretKey
+	 */
 	public SecretKey getKey(){
 		return secret;
 	}
 	
+	/**
+	 * Set the SecretKey.
+	 * @param SecretKey key
+	 */
 	public void setKey(SecretKey key){
 		secret = key;
 	}
 	
+	/**
+	 * Saves the SecretKey to a file of your choosing.
+	 * @param File f
+	 * @throws IOException
+	 */
 	public void saveKeyToFile(File f) throws IOException{
 		ObjectManager.writeObject(f, secret);
 	}
 	
+	/**
+	 * Loads a SecretKey from a file of your choosing.
+	 * @param File f
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void loadKeyFromFile(File f) throws FileNotFoundException, IOException, ClassNotFoundException{
 		ObjectInputStream ois = ObjectManager.readObject(f);
 		SecretKey key = null;
