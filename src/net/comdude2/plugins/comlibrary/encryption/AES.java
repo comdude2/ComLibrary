@@ -40,17 +40,17 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 	
-public class AES256 {
+public class AES {
 	
 	private static final String password = "test";
 	private String salt;
 	private static final int pswdIterations = 65536 ;
-	private static final int keySize = 256;
+	private int keySize = 256;
 	private byte[] ivBytes;
 	private  byte[] globalSaltBytes = null;
 	
-	public AES256(){
-		
+	public AES(int keySize){
+		this.keySize = keySize;
 	}
 	
 	public String encrypt(String plainText) throws Exception { 

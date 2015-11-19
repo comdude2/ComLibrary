@@ -25,23 +25,29 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import net.comdude2.plugins.comlibrary.encryption.AES256;
+import net.comdude2.plugins.comlibrary.encryption.AES;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ComLibrary extends JavaPlugin{
 	
 	private static boolean encryptionTestPassed = false;
+	private static int keySize = 256;
+	public static ComLibrary inst = null;
 	
 	public ComLibrary(){
-		
+		inst = this;
+	}
+	
+	public static ComLibrary getInstance(){
+		return inst;
 	}
 	
 	//Debugging AES
 	public static void main(String[] args) {
 		try{
 			System.out.println("Attempting to encrypt...");
-			AES256 aes = new AES256();
+			AES aes = new AES(keySize);
 			aes.generateSalt();
 			String plain = "Pie is nice";
 			System.out.println("Plain text: " + plain);
@@ -52,6 +58,29 @@ public class ComLibrary extends JavaPlugin{
 				System.out.println("Encryption test passed.");
 				encryptionTestPassed = true;
 			}else{
+				System.out.println("Encryption test failed!");
+				encryptionTestPassed = false;
+			}
+		}catch (java.security.InvalidKeyException e){
+			keySize = 128;
+			try{
+				System.out.println("Attempting to encrypt...");
+				AES aes = new AES(keySize);
+				aes.generateSalt();
+				String plain = "Pie is nice";
+				System.out.println("Plain text: " + plain);
+				String encrypted = aes.encrypt(plain);
+				String decrypted = aes.decrypt(encrypted);
+				System.out.println("Decrypted as: " + decrypted);
+				if (decrypted.equals(plain)){
+					System.out.println("Encryption test passed.");
+					encryptionTestPassed = true;
+				}else{
+					System.out.println("Encryption test failed!");
+					encryptionTestPassed = false;
+				}
+			}catch (Exception e1){
+				e.printStackTrace();
 				System.out.println("Encryption test failed!");
 				encryptionTestPassed = false;
 			}
@@ -78,7 +107,7 @@ public class ComLibrary extends JavaPlugin{
 		}
 		this.getLogger().info("Performing encryption test...");
 		try{
-			AES256 aes = new AES256();
+			AES aes = new AES(keySize);
 			aes.generateSalt();
 			String plain = "Pie is nice";
 			String encrypted = aes.encrypt(plain);
@@ -88,6 +117,26 @@ public class ComLibrary extends JavaPlugin{
 				encryptionTestPassed = true;
 			}else{
 				this.getLogger().info("Encryption test failed!");
+				encryptionTestPassed = false;
+			}
+		}catch (java.security.InvalidKeyException e){
+			keySize = 128;
+			try{
+				AES aes = new AES(keySize);
+				aes.generateSalt();
+				String plain = "Pie is nice";
+				String encrypted = aes.encrypt(plain);
+				String decrypted = aes.decrypt(encrypted);
+				if (decrypted.equals(plain)){
+					this.getLogger().info("Encryption test passed.");
+					encryptionTestPassed = true;
+				}else{
+					this.getLogger().info("Encryption test failed!");
+					encryptionTestPassed = false;
+				}
+			}catch (Exception e1){
+				e.printStackTrace();
+				System.out.println("Encryption test failed!");
 				encryptionTestPassed = false;
 			}
 		}catch (Exception e){
@@ -107,6 +156,10 @@ public class ComLibrary extends JavaPlugin{
 	
 	public static boolean getEncryptionTestPassed(){
 		return encryptionTestPassed;
+	}
+	
+	public static int getKeySize(){
+		return keySize;
 	}
 	
 	private void exportResource(String resourceName, File destination) throws Exception {
