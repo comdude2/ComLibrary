@@ -26,6 +26,10 @@ Contact: admin@mcviral.net
 
 package net.comdude2.plugins.comlibrary.encryption;
 	
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.AlgorithmParameters;
 import java.security.NoSuchAlgorithmException;
@@ -40,6 +44,8 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import net.comdude2.plugins.comlibrary.util.ObjectManager;
 
 import org.apache.commons.codec.binary.Base64;
 	
@@ -146,6 +152,18 @@ public class AES {
 	
 	public String getPassword(){
 		return this.password;
+	}
+	
+	public void saveKeyToFile(File f) throws IOException{
+		ObjectManager.writeObject(f, secret);
+	}
+	
+	public void loadKeyFromFile(File f) throws FileNotFoundException, IOException, ClassNotFoundException{
+		ObjectInputStream ois = ObjectManager.readObject(f);
+		SecretKey key = null;
+		key = (SecretKey) ois.readObject();
+		ois.close();
+		secret = key;
 	}
 	
 }
