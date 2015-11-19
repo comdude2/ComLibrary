@@ -43,55 +43,12 @@ public class ComLibrary extends JavaPlugin{
 		return inst;
 	}
 	
-	//Debugging AES
-	public static void main(String[] args) {
-		try{
-			System.out.println("Attempting to encrypt...");
-			AES aes = new AES(keySize);
-			aes.generateSalt();
-			String plain = "Pie is nice";
-			System.out.println("Plain text: " + plain);
-			String encrypted = aes.encrypt(plain);
-			String decrypted = aes.decrypt(encrypted);
-			System.out.println("Decrypted as: " + decrypted);
-			if (decrypted.equals(plain)){
-				System.out.println("Encryption test passed.");
-				encryptionTestPassed = true;
-			}else{
-				System.out.println("Encryption test failed!");
-				encryptionTestPassed = false;
-			}
-		}catch (java.security.InvalidKeyException e){
-			keySize = 128;
-			try{
-				System.out.println("Attempting to encrypt...");
-				AES aes = new AES(keySize);
-				aes.generateSalt();
-				String plain = "Pie is nice";
-				System.out.println("Plain text: " + plain);
-				String encrypted = aes.encrypt(plain);
-				String decrypted = aes.decrypt(encrypted);
-				System.out.println("Decrypted as: " + decrypted);
-				if (decrypted.equals(plain)){
-					System.out.println("Encryption test passed.");
-					encryptionTestPassed = true;
-				}else{
-					System.out.println("Encryption test failed!");
-					encryptionTestPassed = false;
-				}
-			}catch (Exception e1){
-				e.printStackTrace();
-				System.out.println("Encryption test failed!");
-				encryptionTestPassed = false;
-			}
-		}catch (Exception e){
-			e.printStackTrace();
-			System.out.println("Encryption test failed!");
-			encryptionTestPassed = false;
-		}finally{
-			System.out.println("Encryption test complete.");
-		}
-	}
+	/*
+	 * NOTE
+	 * 
+	 * It is highly recommended that you use the keySize variable in this class to set your keySize in AES
+	 * As when this library loads it ensures that it's usable, be sure to make sure the encryption test passed too.
+	*/
 	
 	@Override
 	public void onEnable(){
