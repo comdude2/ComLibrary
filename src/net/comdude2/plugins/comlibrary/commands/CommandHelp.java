@@ -87,16 +87,8 @@ public class CommandHelp {
 		if(s.contains("%%VERSION%%")){
 			s.replace("%%VERSION%%", this.plugin.getDescription().getVersion());
 		}
-		if(s.contains("%%AUTHORS%%")){
-			String authors = "";
-			for (String a : this.plugin.getDescription().getAuthors()){
-				if (authors == ""){
-					authors = authors + a;
-				}else{
-					authors = authors + ", " + a;
-				}
-			}
-			s.replace("%%AUTHORS%%", authors);
+		if(s.contains("%%AUTHORS%%")) {
+			s.replace("%%AUTHORS%%", String.join(",", this.plugin.getDescription().getAuthors()));
 		}
 		if (s.contains("%%DESCRIPTION%%")){
 			s.replace("%%DESCRIPTION%%", this.plugin.getDescription().getDescription());
