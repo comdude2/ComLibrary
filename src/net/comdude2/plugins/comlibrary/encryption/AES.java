@@ -26,8 +26,11 @@ Contact: admin@mcviral.net
 
 package net.comdude2.plugins.comlibrary.encryption;
 	
+import java.io.UnsupportedEncodingException;
 import java.security.AlgorithmParameters;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -42,34 +45,35 @@ import org.apache.commons.codec.binary.Base64;
 	
 public class AES {
 	
-	private static final String password = "test";
+	private String password = "test";
 	private String salt;
 	private static final int pswdIterations = 65536 ;
 	private int keySize = 256;
 	private byte[] ivBytes;
-	private byte[] globalSaltBytes = null;
+	private SecretKey secret = null;
 	
-	public AES(int keySize){
+	public AES(int keySize, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeySpecException{
 		this.keySize = keySize;
+		this.password = password;
+		this.generateSalt();
+		this.generateKey();
+	}
+	
+	public void generateKey() throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeySpecException{
+		byte[] saltBytes = salt.getBytes("UTF-8");
+		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		PBEKeySpec spec = new PBEKeySpec(
+				password.toCharArray(), 
+				saltBytes, 
+				pswdIterations, 
+				keySize
+				);
+	
+		SecretKey secretKey = factory.generateSecret(spec);
+		secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
 	}
 	
 	public String encrypt(String plainText) throws Exception { 
-		//get salt 
-		byte[] saltBytes = salt.getBytes("UTF-8");
-		
-		// Derive the key
-		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		PBEKeySpec spec = new PBEKeySpec(
-			password.toCharArray(), 
-			saltBytes, 
-			pswdIterations, 
-			keySize
-			);
-		
-		SecretKey secretKey = factory.generateSecret(spec);
-		SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
-		
-		//encrypt the message
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, secret);
 		AlgorithmParameters params = cipher.getParameters();
@@ -80,22 +84,7 @@ public class AES {
 	
 	@SuppressWarnings("static-access")
 	public String decrypt(String encryptedText) throws Exception {
-		
-		byte[] saltBytes = salt.getBytes("UTF-8");
 		byte[] encryptedTextBytes = new Base64().decodeBase64(encryptedText);
-		
-		// Derive the key
-		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		PBEKeySpec spec = new PBEKeySpec(
-				password.toCharArray(), 
-				saltBytes, 
-				pswdIterations, 
-				keySize
-				);
-		SecretKey secretKey = factory.generateSecret(spec);
-		SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
-	
-		// Decrypt the message
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(ivBytes));
 		byte[] decryptedTextBytes = null;
@@ -120,51 +109,15 @@ public class AES {
 		return bytes;
 	}
 	
-	public void generateNewGlobalSaltBytes() throws Exception{
-		byte[] saltBytes = generateSaltMethod();
-		globalSaltBytes = saltBytes;
-	}
-	
 	public void setSalt(String salt){
 		this.salt = salt;
-	}
-	
-	public void setGlobalSaltBytes(byte[] bytes){
-		this.globalSaltBytes = bytes;
 	}
 	
 	public String getSalt(){
 		return this.salt;
 	}
 	
-	public byte[] getGlobalSaltBytes(){
-		return this.globalSaltBytes;
-	}
-	
 	public byte[] encryptBytes(byte[] plainText) throws Exception { 
-		
-		//get salt
-		byte[] saltBytes;
-		if (globalSaltBytes == null){
-			generateNewGlobalSaltBytes();
-			saltBytes = globalSaltBytes;
-		}else{
-			saltBytes = globalSaltBytes;
-		}
-		
-		// Derive the key
-		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		PBEKeySpec spec = new PBEKeySpec(
-				password.toCharArray(), 
-				saltBytes, 
-				pswdIterations, 
-				keySize
-				);
-	
-		SecretKey secretKey = factory.generateSecret(spec);
-		SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
-	
-		//encrypt the message
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.ENCRYPT_MODE, secret);
 		AlgorithmParameters params = cipher.getParameters();
@@ -173,31 +126,7 @@ public class AES {
 		return encryptedTextBytes;
 	}
 	
-	public byte[] decryptBytes(byte[] encryptedText) throws Exception {
-		
-		//get salt
-		byte[] saltBytes;
-		if (globalSaltBytes == null){
-			generateNewGlobalSaltBytes();
-			saltBytes = globalSaltBytes;
-		}else{
-			saltBytes = globalSaltBytes;
-		}
-		//byte[] encryptedTextBytes = new Base64().decodeBase64(encryptedText);
-		byte[] encryptedTextBytes = encryptedText;
-		
-		// Derive the key
-		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-		PBEKeySpec spec = new PBEKeySpec(
-				password.toCharArray(), 
-				saltBytes, 
-				pswdIterations, 
-				keySize
-				);
-		SecretKey secretKey = factory.generateSecret(spec);
-		SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
-	
-		// Decrypt the message
+	public byte[] decryptBytes(byte[] encryptedTextBytes) throws Exception {
 		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(ivBytes));
 		byte[] decryptedTextBytes = null;
@@ -209,6 +138,14 @@ public class AES {
 			e.printStackTrace();
 		}
 		return decryptedTextBytes;
+	}
+	
+	public void setPassword(String pass){
+		this.password = pass;
+	}
+	
+	public String getPassword(){
+		return this.password;
 	}
 	
 }
