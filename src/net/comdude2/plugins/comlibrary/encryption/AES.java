@@ -47,7 +47,7 @@ public class AES {
 	private static final int pswdIterations = 65536 ;
 	private int keySize = 256;
 	private byte[] ivBytes;
-	private  byte[] globalSaltBytes = null;
+	private byte[] globalSaltBytes = null;
 	
 	public AES(int keySize){
 		this.keySize = keySize;
