@@ -38,7 +38,7 @@ public class Title {
 	private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
 
 	/**
-	 * Create a new 1.8 title
+	 * Create a new instance.
 	 * 
 	 * @param title
 	 *            Title
@@ -49,7 +49,7 @@ public class Title {
 	}
 
 	/**
-	 * Create a new 1.8 title
+	 * Create a new instance.
 	 * 
 	 * @param title
 	 *            Title text
@@ -63,7 +63,7 @@ public class Title {
 	}
 
 	/**
-	 * Copy 1.8 title
+	 * Create a new instance.
 	 * 
 	 * @param title
 	 *            Title
@@ -82,7 +82,7 @@ public class Title {
 	}
 
 	/**
-	 * Create a new 1.8 title
+	 * Create a new instance.
 	 * 
 	 * @param title
 	 *            Title text

@@ -44,6 +44,9 @@ public class YamlManager {
 		customConfigFile = new File(plugin.getDataFolder() + "/" + path, filename + ".yml");
 	}
 	
+	/**
+	 * Reload the YAML.
+	 */
 	public void reloadYAML(){
 		customConfigFile = new File(plugin.getDataFolder() + "/" + path, filename + ".yml");
 		if (!customConfigFile.exists()){
@@ -57,6 +60,10 @@ public class YamlManager {
 		customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
 	}
 	
+	/**
+	 * Get the YAML file.
+	 * @return FileConfiguration
+	 */
 	public FileConfiguration getYAML() {
 	    if (customConfig == null) {
 	        reloadYAML();
@@ -64,6 +71,9 @@ public class YamlManager {
 	    return customConfig;
 	}
 	
+	/**
+	 * Save the YAML file.
+	 */
 	public void saveYAML() {
 	    if (customConfig == null || customConfigFile == null) {
 	        return;
@@ -75,6 +85,10 @@ public class YamlManager {
 	    }
 	}
 	
+	/**
+	 * Check if the YAML exists.
+	 * @return boolean
+	 */
 	public boolean exists(){
 		if (customConfigFile.exists()){
 			return true;
@@ -83,6 +97,10 @@ public class YamlManager {
 		}
 	}
 	
+	/**
+	 * Create the YAML.
+	 * @return boolean
+	 */
 	public boolean createFile(){
 		try{
 			return customConfigFile.createNewFile();
@@ -91,6 +109,10 @@ public class YamlManager {
 		}
 	}
 	
+	/**
+	 * Delete the YAML.
+	 * @return boolean
+	 */
 	public boolean delete(){
 		return customConfigFile.delete();
 	}

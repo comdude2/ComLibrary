@@ -19,14 +19,26 @@ public class AbstractCommand {
 		this.response = response;
 	}
 	
+	/**
+	 * Returns the primary name of this command.
+	 * @return String
+	 */
 	public String getName(){
 		return this.name;
 	}
 	
+	/**
+	 * Returns this command's unique ID.
+	 * @return long
+	 */
 	public long getId(){
 		return this.id;
 	}
 	
+	/**
+	 * Returns the lines of help allocated to this command pattern.
+	 * @return LinkedList <String>
+	 */
 	public LinkedList <String> getResponse(){
 		return this.response;
 	}

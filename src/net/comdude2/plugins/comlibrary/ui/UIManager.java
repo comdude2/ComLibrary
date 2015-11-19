@@ -38,6 +38,13 @@ public class UIManager {
 		this.plugin = plugin;
 	}
 	
+	/**
+	 * Create a UI object.
+	 * @param String title
+	 * @param int size
+	 * @param OptionClickEventHandler handler
+	 * @return UI
+	 */
 	public UI createUI(String title, int size, IconMenu.OptionClickEventHandler handler){
 		long id = -1L;
 		id = requestId();
@@ -45,6 +52,11 @@ public class UIManager {
 		return ui;
 	}
 	
+	/**
+	 * Get a UI based on an Id.
+	 * @param long id
+	 * @return UI
+	 */
 	public UI getUI(long id){
 		for (UI ui : this.userInterfaces){
 			if (ui.getId() == id){
@@ -54,10 +66,20 @@ public class UIManager {
 		return null;
 	}
 	
+	/**
+	 * Check if an id is registered.
+	 * @param long id
+	 * @return boolean
+	 */
 	public boolean isRegistered(long id){
 		return this.registeredInterfaceIds.contains(id);
 	}
 	
+	/**
+	 * Destroy a UI based on it's Id.
+	 * @param long id
+	 * @return boolean
+	 */
 	public boolean destroyUI(long id){
 		UI ui = getUI(id);
 		if (ui != null){
@@ -70,6 +92,11 @@ public class UIManager {
 		}
 	}
 	
+	/**
+	 * Destroy a UI.
+	 * @param UI ui
+	 * @return boolean
+	 */
 	public boolean destroyUI(UI ui){
 		if (ui != null){
 			ui.destroy();
@@ -81,6 +108,10 @@ public class UIManager {
 		}
 	}
 	
+	/**
+	 * Get the list of UIs.
+	 * @return LinkedList <UI>
+	 */
 	public LinkedList <UI> getInterfaces(){
 		return this.userInterfaces;
 	}

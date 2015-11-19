@@ -69,33 +69,63 @@ public class IconMenu implements Listener{
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
     
+    /**
+     * Unregister OptionClickEvent from handler list.
+     */
     public void unregisterEvents(){
     	HandlerList.unregisterAll(this);
     }
    
+    /**
+     * Set / Add an option to the menu.
+     * @param int position
+     * @param ItemStack icon
+     * @param String name
+     * @param String... info
+     * @return IconMenu
+     */
     public IconMenu setOption(int position, ItemStack icon, String name, String... info) {
         optionNames[position] = name;
         optionIcons[position] = setItemNameAndLore(icon, name, info);
         return this;
     }
     
+    /**
+     * Clear all options.
+     */
     public void clear(){
     	this.optionNames = new String[size];
         this.optionIcons = new ItemStack[size];
     }
     
+    /**
+     * Get the options in the menu.
+     * @return String[]
+     */
     public String[] getOptionNames(){
     	return optionNames;
     }
     
+    /**
+     * Get the icons for the options in the menu.
+     * @return ItemStack[]
+     */
     public ItemStack[] getOptionIcons(){
     	return optionIcons;
     }
     
+    /**
+     * Get the size of the menu.
+     * @return int
+     */
     public int getMenuSize(){
     	return size;
     }
    
+    /**
+     * Open the menu in a players inventory.
+     * @param Player player
+     */
     public void open(Player player) {
         Inventory inventory = Bukkit.createInventory(player, size, name);
         for (int i = 0; i < optionIcons.length; i++) {
@@ -106,6 +136,9 @@ public class IconMenu implements Listener{
         player.openInventory(inventory);
     }
    
+    /**
+     * Destroy the inventory.
+     */
     public void destroy() {
         HandlerList.unregisterAll(this);
         handler = null;
@@ -114,6 +147,10 @@ public class IconMenu implements Listener{
         optionIcons = null;
     }
    
+    /**
+     * Listen for inventory clicks
+     * @param InventoryClickEvent event
+     */
     @EventHandler(priority=EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(name)) {

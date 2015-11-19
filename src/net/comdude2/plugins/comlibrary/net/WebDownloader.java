@@ -42,6 +42,14 @@ public class WebDownloader {
 		this.log = log;
 	}
 	
+	/**
+	 * Download a file.
+	 * @param String address
+	 * @param String fileLocation
+	 * @return boolean
+	 * @throws MalformedURLException
+	 * @throws Exception
+	 */
 	public boolean downloadFile(String address, String fileLocation) throws MalformedURLException, Exception{
 		URL source = new URL(address);
 		FileOutputStream fos = null;
@@ -83,6 +91,14 @@ public class WebDownloader {
 		return false;
 	}
 	
+	/**
+	 * Download a file using MD5 checksum.
+	 * @param String address
+	 * @param String fileLocation
+	 * @param String MD5
+	 * @return boolean
+	 * @throws MalformedURLException
+	 */
 	public boolean downloadFileWithMD5(String address, String fileLocation, String MD5) throws MalformedURLException{
 		URL source = new URL(address);
 		FileOutputStream fos = null;
@@ -140,6 +156,12 @@ public class WebDownloader {
 		return false;
 	}
 	
+	/**
+	 * Check an MD5 checksum against a file.
+	 * @param String original
+	 * @param String fileLocation
+	 * @return boolean
+	 */
 	public boolean checkMD5File(String original, String fileLocation){
 		log.debug("Checking MD5's...");
 		try {
