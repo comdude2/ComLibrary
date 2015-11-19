@@ -48,6 +48,10 @@ public class IconMenu implements Listener{
         this.optionIcons = new ItemStack[size];
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
+    
+    public void unregisterEvents(){
+    	HandlerList.unregisterAll(this);
+    }
    
     public IconMenu setOption(int position, ItemStack icon, String name, String... info) {
         optionNames[position] = name;
