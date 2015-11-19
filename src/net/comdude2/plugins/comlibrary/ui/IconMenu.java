@@ -16,13 +16,13 @@ import org.bukkit.plugin.Plugin;
 
 public class IconMenu implements Listener{
 	
-	private String name;
-    private int size;
-    private OptionClickEventHandler handler;
-    private Plugin plugin;
+	private String name = null;
+    private int size = 54;
+    private OptionClickEventHandler handler = null;
+    private Plugin plugin = null;
    
-    private String[] optionNames;
-    private ItemStack[] optionIcons;
+    private String[] optionNames = null;
+    private ItemStack[] optionIcons = null;
     
     
     //To implement this:

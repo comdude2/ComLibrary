@@ -37,6 +37,33 @@ public class ComLibrary extends JavaPlugin{
 		
 	}
 	
+	//Debugging AES
+	public static void main(String[] args) {
+		try{
+			System.out.println("Attempting to encrypt...");
+			AES256 aes = new AES256();
+			aes.generateSalt();
+			String plain = "Pie is nice";
+			System.out.println("Plain text: " + plain);
+			String encrypted = aes.encrypt(plain);
+			String decrypted = aes.decrypt(encrypted);
+			System.out.println("Decrypted as: " + decrypted);
+			if (decrypted.equals(plain)){
+				System.out.println("Encryption test passed.");
+				encryptionTestPassed = true;
+			}else{
+				System.out.println("Encryption test failed!");
+				encryptionTestPassed = false;
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			System.out.println("Encryption test failed!");
+			encryptionTestPassed = false;
+		}finally{
+			System.out.println("Encryption test complete.");
+		}
+	}
+	
 	@Override
 	public void onEnable(){
 		File path = new File("");
@@ -64,7 +91,7 @@ public class ComLibrary extends JavaPlugin{
 				encryptionTestPassed = false;
 			}
 		}catch (Exception e){
-			//e.printStackTrace();
+			e.printStackTrace();
 			this.getLogger().info("Encryption test failed!");
 			encryptionTestPassed = false;
 		}finally{
