@@ -58,6 +58,7 @@ public class AES {
 	private byte[] ivBytes;
 	private SecretKey secret = null;
 	
+	//keySize should be between 128 and 256
 	public AES(int keySize, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeySpecException{
 		this.keySize = keySize;
 		this.password = password;

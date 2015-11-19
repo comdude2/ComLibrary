@@ -65,7 +65,6 @@ public class ComLibrary extends JavaPlugin{
 		this.getLogger().info("Performing encryption test...");
 		try{
 			AES aes = new AES(keySize, "encryptionTest");
-			aes.generateSalt();
 			String plain = "Pie is nice";
 			String encrypted = aes.encrypt(plain);
 			String decrypted = aes.decrypt(encrypted);
@@ -80,7 +79,6 @@ public class ComLibrary extends JavaPlugin{
 			keySize = 128;
 			try{
 				AES aes = new AES(keySize, "encryptionTest");
-				aes.generateSalt();
 				String plain = "Pie is nice";
 				String encrypted = aes.encrypt(plain);
 				String decrypted = aes.decrypt(encrypted);
