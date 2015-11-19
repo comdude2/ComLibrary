@@ -10,5 +10,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ComLibrary/libraries/other/commons-codec/commons-codec-1.9-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libraries/other/JCE/local_policy.jar"/>
+	<classpathentry kind="lib" path="libraries/other/JCE/US_export_policy.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
