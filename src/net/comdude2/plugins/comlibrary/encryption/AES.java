@@ -154,6 +154,14 @@ public class AES {
 		return this.password;
 	}
 	
+	public SecretKey getKey(){
+		return secret;
+	}
+	
+	public void setKey(SecretKey key){
+		secret = key;
+	}
+	
 	public void saveKeyToFile(File f) throws IOException{
 		ObjectManager.writeObject(f, secret);
 	}
