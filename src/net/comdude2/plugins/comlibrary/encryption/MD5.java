@@ -25,9 +25,10 @@ import java.security.MessageDigest;
 
 public class MD5 {
 	
-	public MD5(){
-		
-	}
+	/*
+	 * NOTE You can parse a string to this using the following code: 
+	 * InputStream stream = new ByteArrayInputStream(exampleString.getBytes(StandardCharsets.UTF_8));
+	*/
 	
 	public static byte[] createChecksum(InputStream is, int bufferSize) throws Exception {
 		byte[] buffer = new byte [bufferSize];
