@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import net.comdude2.plugins.comlibrary.database.DatabaseConnector;
 import net.comdude2.plugins.comlibrary.encryption.AES;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -39,6 +40,10 @@ public class ComLibrary extends JavaPlugin{
 		inst = this;
 	}
 	
+	/**
+	 * Returns this instance of ComLibrary, will be null if this plugin isn't loaded.
+	 * @return ComLibrary
+	 */
 	public static ComLibrary getInstance(){
 		return inst;
 	}
@@ -52,6 +57,10 @@ public class ComLibrary extends JavaPlugin{
 	
 	@Override
 	public void onEnable(){
+		
+		//Load database driver
+		try{DatabaseConnector.loadJdbcDriver();this.getLogger().info("Loaded MySQL driver.");}catch(Exception e){this.getLogger().warning("Failed to load MySQL driver!");}
+		
 		File path = new File("");
 		File f = new File(path.getAbsolutePath() + "ComLibrary_Licence.txt");
 		if (!f.exists()){
@@ -109,10 +118,18 @@ public class ComLibrary extends JavaPlugin{
 		this.getLogger().info(this.getDescription().getName() + " V" + this.getDescription().getVersion() + " is now Disabled!");
 	}
 	
+	/**
+	 * Get whether the encryption test performed onEnable passed or not.
+	 * @return boolean
+	 */
 	public static boolean getEncryptionTestPassed(){
 		return encryptionTestPassed;
 	}
 	
+	/**
+	 * Get the current AES key size.
+	 * @return int
+	 */
 	public static int getKeySize(){
 		return keySize;
 	}

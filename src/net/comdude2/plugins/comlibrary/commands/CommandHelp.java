@@ -1,3 +1,23 @@
+/*
+ComLibrary - A library plugin for Minecraft
+Copyright (C) 2015  comdude2 (Matt Armer)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Contact: admin@mcviral.net
+*/
+
 package net.comdude2.plugins.comlibrary.commands;
 
 import java.util.LinkedList;
@@ -16,6 +36,11 @@ public class CommandHelp {
 		this.plugin = plugin;
 	}
 	
+	/**
+	 * Register a command.
+	 * @param AbstractCommand command
+	 * @return boolean
+	 */
 	public boolean registerCommand(AbstractCommand command){
 		if (getCommand(command.getName()) == null && getCommand(command.getId()) == null){
 			commands.add(command);
@@ -25,6 +50,11 @@ public class CommandHelp {
 		}
 	}
 	
+	/**
+	 * Unregister a command.
+	 * @param String commandName
+	 * @return boolean
+	 */
 	public boolean unregisterCommand(String commandName){
 		AbstractCommand cmd = getCommand(commandName);
 		if (cmd != null){
@@ -35,6 +65,11 @@ public class CommandHelp {
 		}
 	}
 	
+	/**
+	 * Get a command with the specified command name.
+	 * @param String commandName
+	 * @return AbstractCommand
+	 */
 	public AbstractCommand getCommand(String commandName){
 		for (AbstractCommand command : commands){
 			if (command.getName().equalsIgnoreCase(commandName)){
@@ -44,6 +79,11 @@ public class CommandHelp {
 		return null;
 	}
 	
+	/**
+	 * Get a command with the specified id.
+	 * @param long id
+	 * @return AbstractCommand
+	 */
 	public AbstractCommand getCommand(long id){
 		for (AbstractCommand command : commands){
 			if (command.getId() == id){
@@ -53,6 +93,14 @@ public class CommandHelp {
 		return null;
 	}
 	
+	/**
+	 * Display help based on the command and arguments.
+	 * @param CommandSender sender
+	 * @param String command
+	 * @param String[] args
+	 */
+	
+	//TODO THIS IS NOT FINISHED, IT DOESN'T TAKE INTO ACCOUNT THE ARGS.
 	public void displayHelp(CommandSender sender, String command, String[] args){
 		AbstractCommand cmd = getCommand(command);
 		if (cmd != null){
@@ -60,6 +108,14 @@ public class CommandHelp {
 		}
 	}
 	
+	/**
+	 * Display help based on the command and arguments.
+	 * @param CommandSender sender
+	 * @param String id
+	 * @param String[] args
+	 */
+	
+	//TODO THIS IS NOT FINISHED, IT DOESN'T TAKE INTO ACCOUNT THE ARGS.
 	public void displayHelp(CommandSender sender, long id, String[] args){
 		AbstractCommand cmd = getCommand(id);
 		if (cmd != null){
@@ -96,6 +152,10 @@ public class CommandHelp {
 		return s;
 	}
 	
+	/**
+	 * Generate a new Id for use in an AbstractCommand.
+	 * @return long
+	 */
 	public long generateNewId(){
 		Random r = new Random();
 		long chosen = 0L;

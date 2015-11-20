@@ -43,11 +43,23 @@ public class DatabaseConnector {
 		this.log = log;
 	}
 	
+	/**
+	 * Sets the credentials for connecting to the MySQl database.
+	 * @param String username
+	 * @param String password
+	 */
 	public void setupConnection(String username, String password){
 		this.username = username;
 		this.password = password;
 	}
 	
+	/**
+	 * Connect to the MySQL database.
+	 * @throws ConnectionException
+	 * @throws SQLException
+	 * @throws IllegalStateException
+	 * @throws Exception
+	 */
 	public void connect() throws ConnectionException, SQLException, IllegalStateException, Exception{
 		if ((this.URL != null) && (this.username != null) && (this.password != null)){
 			//Connect
@@ -63,10 +75,17 @@ public class DatabaseConnector {
 		}
 	}
 	
+	/**
+	 * Get the connection object.
+	 * @return Connection
+	 */
 	public Connection getConnection(){
 		return connection;
 	}
 	
+	/**
+	 * Disconnect from the database.
+	 */
 	public void disconnect(){
 		if (connection != null){
 			try {
@@ -85,7 +104,10 @@ public class DatabaseConnector {
 	 * If you don't, on trying to connect, it could throw an error.
 	 * 
 	 */
-	public void loadJdbcDriver(){
+	/**
+	 * Ensure that the MySQL database driver is loaded, this shouldn't be needed as this method is called when this plugin is loaded.
+	 */
+	public static void loadJdbcDriver(){
 		System.out.println("Loading MySQL jdbc driver...");
 		try {
 		    Class.forName("com.mysql.jdbc.Driver");

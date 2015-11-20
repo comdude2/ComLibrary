@@ -1,6 +1,8 @@
+net.comdude2.plugins.comlibrary.commands
 net.comdude2.plugins.comlibrary.database
 net.comdude2.plugins.comlibrary.encryption
 net.comdude2.plugins.comlibrary.main
 net.comdude2.plugins.comlibrary.misc
 net.comdude2.plugins.comlibrary.net
+net.comdude2.plugins.comlibrary.ui
 net.comdude2.plugins.comlibrary.util

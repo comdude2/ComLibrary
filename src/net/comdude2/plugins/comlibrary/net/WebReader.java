@@ -31,10 +31,11 @@ import java.util.LinkedList;
 
 public class WebReader {
 	
-	public WebReader(){
-		
-	}
-	
+	/**
+	 * Read data from a web source.
+	 * @param String address
+	 * @return boolean
+	 */
 	public static LinkedList <String> readData(String address) throws MalformedURLException{
 		LinkedList <String> lines = new LinkedList <String> ();
 		try {

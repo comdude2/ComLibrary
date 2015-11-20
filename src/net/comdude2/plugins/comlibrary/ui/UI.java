@@ -32,18 +32,35 @@ public class UI {
 		menu = new IconMenu(title, size, handler, plugin);
 	}
 	
+	/**
+	 * Get this UIs Id.
+	 * @return long
+	 */
 	public long getId(){
 		return this.id;
 	}
 	
+	/**
+	 * Get the menu of this UI.
+	 * @return IconMenu
+	 */
 	public IconMenu getMenu(){
 		return this.menu;
 	}
 	
+	/**
+	 * @param String title
+	 * @param int size
+	 * @param OptionClickEventHandler handler
+	 * @param Plugin plugin
+	 */
 	public void create(String title, int size, IconMenu.OptionClickEventHandler handler, Plugin plugin){
 		menu = new IconMenu(title, size, handler, plugin);
 	}
 	
+	/**
+	 * Destroy the UI.
+	 */
 	public void destroy(){
 		menu.destroy();
 		menu.unregisterEvents();
