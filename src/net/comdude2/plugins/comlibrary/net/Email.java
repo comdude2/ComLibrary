@@ -19,8 +19,10 @@ public class Email {
 		MimeMessage message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(from));
 		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-		for (String s : cc){
-			message.addRecipient(Message.RecipientType.CC, new InternetAddress(s));
+		if (cc != null){
+			for (String s : cc){
+				message.addRecipient(Message.RecipientType.CC, new InternetAddress(s));
+			}
 		}
 		message.setSubject(subject);
 		message.setText(text);

@@ -25,8 +25,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import net.comdude2.plugins.comlibrary.database.DatabaseConnector;
 import net.comdude2.plugins.comlibrary.encryption.AES;
+import net.comdude2.plugins.comlibrary.net.Email;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,6 +75,20 @@ public class ComLibrary extends JavaPlugin{
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
 		}
+		
+		//JavaMail
+		try {
+			Email.send("example@msn.com", null, "example@msn.com", "localhost", "How nice is pie?", "It's very nice.");
+			this.getLogger().info("Email api working.");
+		} catch (AddressException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (MessagingException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		//Encryption
 		this.getLogger().info("Performing encryption test...");
 		try{
 			AES aes = new AES(keySize, "encryptionTest");
