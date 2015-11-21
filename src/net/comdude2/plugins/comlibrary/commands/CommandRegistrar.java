@@ -42,7 +42,8 @@ public class CommandRegistrar {
         commandMap = this.getCommandMap();
     }
 
-    public boolean register(Class clazz) {
+    @SuppressWarnings("rawtypes")
+	public boolean register(Class clazz) {
 
         Method[] methods = clazz.getMethods();
 
