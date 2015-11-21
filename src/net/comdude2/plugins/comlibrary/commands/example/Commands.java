@@ -24,6 +24,7 @@ public class Commands {
      */
     @CommandMethod(cmdArgs = {"set", "health", "<var>"}, console = true, usage = "/set health <player>", aliases = {}, description = "Set's players health to full.", type = CommandType.DYNAMIC, permission = "comlibrary.sethealth")
     public void setHealth(CommandWrapper cw) {
+        @Deprecated
         Player p = Bukkit.getPlayer(cw.getVars()[0]); /* <VAR>s will stack into this array IN ORDER. In this command, we have one; [1] would be null. */
         if(p != null) {
             p.setHealth(20D);
