@@ -66,6 +66,7 @@ public class CommandRegistrar {
     public boolean interceptCommand(CommandWrapper cw) {
 
         for(ComCommand cc : this.commands) {
+            if(cc.getCommandMethod().cmdArgs().length != cw.getArgs().length) continue;
             if(cc.getCommandMethod().type() == CommandType.STATIC) {
                 String[] args = cc.getCommandMethod().cmdArgs();
                 if(Arrays.equals(args, cw.getArgs())) {
@@ -82,19 +83,19 @@ public class CommandRegistrar {
                     }
                 }
             } else if(cc.getCommandMethod().type() == CommandType.DYNAMIC) {
-                String[] args = cc.getCommandMethod().cmdArgs();
-                if(Arrays.equals(args, cw.getArgs())) {
+                String[] vars = new String[] {};
+                String[] wrap = cw.getArgs().clone();
+
+                for(int i = 0; i < cc.getCommandMethod().cmdArgs().length; i++) {
+                    if(cc.getCommandMethod().cmdArgs()[i].equalsIgnoreCase("<var>")) {
+                        vars[vars.length-1] = wrap[i];
+                        wrap[i] = "<var>";
+                    }
+                }
+
+                if(Arrays.equals(cc.getCommandMethod().cmdArgs(), wrap)) {
                     cc.execute(cw.getSender(), cw.getLabel(), cw.getArgs());
                     return true;
-                }
-                if(cc.getCommandMethod().aliases().length > 0) {
-                    for(String s : cc.getCommandMethod().aliases()) {
-                        args[0] = s;
-                        if(Arrays.equals(args, cw.getArgs())) {
-                            cc.execute(cw.getSender(), cw.getLabel(), cw.getArgs());
-                            return true;
-                        }
-                    }
                 }
             }
         }
