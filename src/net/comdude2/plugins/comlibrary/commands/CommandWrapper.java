@@ -32,12 +32,17 @@ public class CommandWrapper {
     private final Command cmd;
     private final String label;
     private final String[] args;
+    private String[] vars;
 
     public CommandWrapper(CommandSender sender, Command cmd, String label, String[] args) {
         this.sender = sender;
         this.cmd = cmd;
         this.label = label;
         this.args = args;
+    }
+
+    public String[] getVars() {
+        return this.vars;
     }
 
     public Command getCmd() {

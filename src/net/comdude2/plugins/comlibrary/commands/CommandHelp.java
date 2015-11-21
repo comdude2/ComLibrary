@@ -144,7 +144,7 @@ public class CommandHelp {
 			s.replace("%%VERSION%%", this.plugin.getDescription().getVersion());
 		}
 		if(s.contains("%%AUTHORS%%")) {
-			s.replace("%%AUTHORS%%", String.join(",", this.plugin.getDescription().getAuthors()));
+			s.replace("%%AUTHORS%%", String.join(", ", this.plugin.getDescription().getAuthors()));
 		}
 		if (s.contains("%%DESCRIPTION%%")){
 			s.replace("%%DESCRIPTION%%", this.plugin.getDescription().getDescription());

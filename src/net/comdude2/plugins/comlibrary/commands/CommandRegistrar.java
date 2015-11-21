@@ -82,7 +82,20 @@ public class CommandRegistrar {
                     }
                 }
             } else if(cc.getCommandMethod().type() == CommandType.DYNAMIC) {
-
+                String[] args = cc.getCommandMethod().cmdArgs();
+                if(Arrays.equals(args, cw.getArgs())) {
+                    cc.execute(cw.getSender(), cw.getLabel(), cw.getArgs());
+                    return true;
+                }
+                if(cc.getCommandMethod().aliases().length > 0) {
+                    for(String s : cc.getCommandMethod().aliases()) {
+                        args[0] = s;
+                        if(Arrays.equals(args, cw.getArgs())) {
+                            cc.execute(cw.getSender(), cw.getLabel(), cw.getArgs());
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;
