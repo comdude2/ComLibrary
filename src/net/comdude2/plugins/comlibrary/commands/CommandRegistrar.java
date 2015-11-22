@@ -37,22 +37,24 @@ public class CommandRegistrar {
 
     private final HashSet<ComCommand> commands = new HashSet<ComCommand>();
     private final SimpleCommandMap commandMap;
+    private Object commandsOb;
 
     public CommandRegistrar() {
         commandMap = this.getCommandMap();
     }
 
     @SuppressWarnings("rawtypes")
-	public boolean register(Class clazz) {
+	public boolean register(Object instance) {
 
-        Method[] methods = clazz.getMethods();
+        this.commandsOb = instance;
+        Method[] methods = instance.getClass().getMethods();
 
         for(Method m : methods) {
             CommandMethod cm = m.getAnnotation(CommandMethod.class);
             if(cm != null) {
-                commands.add(new ComCommand(m, cm));
+                commands.add(new ComCommand(m, cm, this));
                 /* force it to use specified name, even if it is already registered and therefore needs to be redefined */
-                this.commandMap.register(cm.cmdArgs()[0], new ComCommand(m, cm));
+                this.commandMap.register(cm.cmdArgs()[0], new ComCommand(m, cm, this));
             }
         }
 
@@ -101,7 +103,6 @@ public class CommandRegistrar {
         }
         return false;
     }
-
     public SimpleCommandMap getCommandMap() {
         SimplePluginManager spm = (SimplePluginManager) Bukkit.getServer().getPluginManager();
         try {
@@ -116,6 +117,10 @@ public class CommandRegistrar {
 
     public HashSet<ComCommand> getDefinedCommands() {
         return this.commands;
+    }
+
+    public Object getCommandsOb() {
+        return this.commandsOb;
     }
 
 
